@@ -46,7 +46,7 @@ async function fetchWorkouts() {
   errorMsg.value = ''
   try {
     const res = await api.get('/workouts/getMyWorkouts')
-    workouts.value = res.data
+    workouts.value = res.data.workouts
   } catch (err) {
     errorMsg.value = err.response?.data?.message || 'Failed to load workouts.'
   } finally {
@@ -258,7 +258,7 @@ onMounted(fetchWorkouts)
               </div>
               <div class="mb-3">
                 <label class="ff-label">Duration (minutes)</label>
-                <input v-model="newWorkout.duration" type="number" class="ff-input" placeholder="e.g. 45" min="1" required />
+                <input v-model="newWorkout.duration" type="number" class="ff-input" placeholder="e.g. 45" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required />
               </div>
               <div class="mb-4">
                 <label class="ff-label">Status</label>
@@ -300,7 +300,7 @@ onMounted(fetchWorkouts)
               </div>
               <div class="mb-3">
                 <label class="ff-label">Duration (minutes)</label>
-                <input v-model="editWorkout.duration" type="number" class="ff-input" min="1" required />
+                <input v-model="editWorkout.duration" type="number" class="ff-input" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required />
               </div>
               <div class="mb-4">
                 <label class="ff-label">Status</label>
