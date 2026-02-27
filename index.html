@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitForge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <style>
+      :root {
+        --ff-bg: #0f0f0f;
+        --ff-surface: #1a1a1a;
+        --ff-surface2: #222222;
+        --ff-border: #2a2a2a;
+        --ff-green: #39ff14;
+        --ff-green-glow: rgba(57, 255, 20, 0.15);
+        --ff-text: #f0f0f0;
+        --ff-muted: #888888;
+      }
+      * { box-sizing: border-box; }
+      body { font-family: 'Inter', sans-serif; background: var(--ff-bg); color: var(--ff-text); min-height: 100vh; }
+
+      /* Auth BG */
+      .ff-auth-bg {
+        min-height: 100vh;
+        background: var(--ff-bg);
+        background-image: radial-gradient(ellipse at 20% 50%, rgba(57,255,20,0.05) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(57,255,20,0.03) 0%, transparent 50%);
+        display: flex; align-items: center; justify-content: center; padding: 2rem 1rem;
+      }
+
+      /* Card */
+      .ff-card {
+        background: var(--ff-surface); border: 1px solid var(--ff-border); border-radius: 16px;
+        padding: 2.5rem; width: 100%; max-width: 420px;
+        box-shadow: 0 0 40px rgba(0,0,0,0.6), 0 0 80px rgba(57,255,20,0.04);
+      }
+
+      /* Logo */
+      .ff-logo { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.5px; color: var(--ff-text); }
+      .ff-logo span { color: var(--ff-green); }
+      .ff-logo-icon {
+        width: 50px; height: 50px; background: var(--ff-green-glow);
+        border: 1px solid rgba(57,255,20,0.3); border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.4rem; color: var(--ff-green); margin: 0 auto 1rem;
+      }
+
+      /* Inputs */
+      .ff-label { font-size: 0.78rem; font-weight: 600; color: var(--ff-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.4rem; display: block; }
+      .ff-input {
+        background: var(--ff-surface2) !important; border: 1px solid var(--ff-border) !important;
+        border-radius: 10px !important; color: var(--ff-text) !important;
+        padding: 0.7rem 1rem !important; font-size: 0.95rem !important;
+        transition: border-color 0.2s, box-shadow 0.2s !important; width: 100%;
+      }
+      .ff-input::placeholder { color: #444 !important; }
+      .ff-input:focus { border-color: var(--ff-green) !important; box-shadow: 0 0 0 3px var(--ff-green-glow) !important; outline: none !important; }
+      .ff-input.is-invalid { border-color: #ff4d4d !important; }
+      .ff-input.is-valid { border-color: var(--ff-green) !important; }
+
+      /* Select */
+      .ff-select {
+        background: var(--ff-surface2) !important; border: 1px solid var(--ff-border) !important;
+        border-radius: 10px !important; color: var(--ff-text) !important;
+        padding: 0.7rem 1rem !important; font-size: 0.95rem !important; width: 100%;
+      }
+      .ff-select:focus { border-color: var(--ff-green) !important; box-shadow: 0 0 0 3px var(--ff-green-glow) !important; outline: none !important; }
+      .ff-select option { background: var(--ff-surface2); }
+
+      /* Main Button */
+      .ff-btn {
+        background: var(--ff-green); color: #000; border: none; border-radius: 10px;
+        font-weight: 700; font-size: 0.95rem; padding: 0.75rem; width: 100%;
+        cursor: pointer; transition: background 0.2s, box-shadow 0.2s, transform 0.1s; letter-spacing: 0.3px;
+      }
+      .ff-btn:hover:not(:disabled) { background: #4fff2a; box-shadow: 0 0 20px rgba(57,255,20,0.4); transform: translateY(-1px); }
+      .ff-btn:disabled { background: #2a2a2a; color: #555; cursor: not-allowed; }
+
+      /* Alerts */
+      .ff-alert-danger { background: rgba(255,77,77,0.1); border: 1px solid rgba(255,77,77,0.3); border-radius: 10px; color: #ff8080; padding: 0.65rem 1rem; font-size: 0.875rem; }
+      .ff-alert-success { background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.3); border-radius: 10px; color: var(--ff-green); padding: 0.65rem 1rem; font-size: 0.875rem; }
+      .ff-invalid-feedback { color: #ff6b6b; font-size: 0.78rem; margin-top: 0.3rem; }
+      .ff-hint { color: var(--ff-muted); font-size: 0.78rem; margin-top: 0.3rem; }
+
+      /* Navbar */
+      .ff-navbar {
+        background: var(--ff-surface); border-bottom: 1px solid var(--ff-border);
+        padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between;
+        position: sticky; top: 0; z-index: 100;
+      }
+      .ff-nav-logo { font-size: 1.2rem; font-weight: 800; color: var(--ff-text); text-decoration: none; letter-spacing: -0.3px; }
+      .ff-nav-logo span { color: var(--ff-green); }
+      .ff-logout-btn {
+        background: transparent; border: 1px solid var(--ff-border); color: var(--ff-muted);
+        border-radius: 8px; padding: 0.4rem 1rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;
+        transition: border-color 0.2s, color 0.2s;
+      }
+      .ff-logout-btn:hover { border-color: #ff4d4d; color: #ff6b6b; }
+
+      /* Workouts page */
+      .ff-page { background: var(--ff-bg); min-height: calc(100vh - 57px); padding: 2rem 1rem; }
+
+      /* Stats */
+      .ff-stat { background: var(--ff-surface); border: 1px solid var(--ff-border); border-radius: 12px; padding: 1rem 1.25rem; text-align: center; }
+      .ff-stat-value { font-size: 1.6rem; font-weight: 800; color: var(--ff-green); }
+      .ff-stat-label { font-size: 0.72rem; color: var(--ff-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.2rem; }
+
+      /* Workout cards */
+      .ff-workout-card {
+        background: var(--ff-surface); border: 1px solid var(--ff-border); border-radius: 14px;
+        padding: 1.25rem; height: 100%; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      }
+      .ff-workout-card:hover { border-color: rgba(57,255,20,0.2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+
+      /* Badges */
+      .ff-badge-pending { background: rgba(255,193,7,0.12); color: #ffc107; border: 1px solid rgba(255,193,7,0.3); border-radius: 20px; padding: 0.2rem 0.65rem; font-size: 0.72rem; font-weight: 600; }
+      .ff-badge-completed { background: rgba(57,255,20,0.1); color: var(--ff-green); border: 1px solid rgba(57,255,20,0.3); border-radius: 20px; padding: 0.2rem 0.65rem; font-size: 0.72rem; font-weight: 600; }
+      .ff-badge-skipped { background: rgba(136,136,136,0.08); color: var(--ff-muted); border: 1px solid var(--ff-border); border-radius: 20px; padding: 0.2rem 0.65rem; font-size: 0.72rem; font-weight: 600; }
+
+      /* Card action buttons */
+      .ff-btn-complete { background: rgba(57,255,20,0.07); border: 1px solid rgba(57,255,20,0.2); color: var(--ff-green); border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.2s; flex: 1; }
+      .ff-btn-complete:hover:not(:disabled) { background: rgba(57,255,20,0.15); }
+      .ff-btn-edit { background: rgba(99,102,241,0.07); border: 1px solid rgba(99,102,241,0.2); color: #818cf8; border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.2s; flex: 1; }
+      .ff-btn-edit:hover { background: rgba(99,102,241,0.15); }
+      .ff-btn-delete { background: rgba(255,77,77,0.07); border: 1px solid rgba(255,77,77,0.15); color: #ff6b6b; border-radius: 8px; padding: 0.4rem 0.65rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
+      .ff-btn-delete:hover:not(:disabled) { background: rgba(255,77,77,0.15); }
+
+      /* Add button */
+      .ff-add-btn { background: var(--ff-green); color: #000; border: none; border-radius: 10px; padding: 0.6rem 1.25rem; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; }
+      .ff-add-btn:hover { background: #4fff2a; box-shadow: 0 0 15px rgba(57,255,20,0.35); }
+
+      /* Modal */
+      .ff-modal .modal-content { background: var(--ff-surface); border: 1px solid var(--ff-border); border-radius: 16px; color: var(--ff-text); }
+      .ff-modal .modal-header { border-bottom: 1px solid var(--ff-border); padding: 1.25rem 1.5rem; }
+      .ff-modal .modal-body { padding: 1.25rem 1.5rem 1.5rem; }
+      .ff-modal .btn-close { filter: invert(1) brightness(0.6); }
+      .ff-modal-btn-primary { background: var(--ff-green); color: #000; border: none; border-radius: 10px; font-weight: 700; padding: 0.65rem 1rem; cursor: pointer; flex: 1; transition: background 0.2s; }
+      .ff-modal-btn-primary:hover:not(:disabled) { background: #4fff2a; }
+      .ff-modal-btn-primary:disabled { background: #2a2a2a; color: #555; cursor: not-allowed; }
+      .ff-modal-btn-cancel { background: transparent; color: var(--ff-muted); border: 1px solid var(--ff-border); border-radius: 10px; font-weight: 500; padding: 0.65rem 1rem; cursor: pointer; }
+      .ff-modal-btn-cancel:hover { border-color: #555; color: var(--ff-text); }
+
+      /* Empty state */
+      .ff-empty { text-align: center; padding: 5rem 1rem; color: var(--ff-muted); }
+      .ff-empty-icon { width: 72px; height: 72px; background: var(--ff-surface); border: 1px solid var(--ff-border); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.25rem; }
+
+      /* Link */
+      .ff-link { color: var(--ff-green); text-decoration: none; font-weight: 600; }
+      .ff-link:hover { color: #4fff2a; }
+
+      /* Spinner */
+      .ff-spinner { width: 1rem; height: 1rem; border: 2px solid rgba(0,0,0,0.2); border-top-color: #000; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; vertical-align: middle; margin-right: 0.4rem; }
+      .ff-spinner-green { border-color: rgba(57,255,20,0.2); border-top-color: var(--ff-green); }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
